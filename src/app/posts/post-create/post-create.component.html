@@ -6,6 +6,8 @@
               placeholder="Ex. New Post"
               [(ngModel)]="enteredPost"></textarea>
   </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onAddPost()">
+    Save Post
+  </button>
 </mat-card>
-<button (click)="onAddPost()">Save Post</button>
 <p>{{ newPost }}</p>
