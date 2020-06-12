@@ -10,7 +10,6 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  @Output() postCreated = new EventEmitter<Post>();
   @ViewChild('form', { static: true }) form: NgForm;
 
   constructor(private postService: PostService) {
@@ -21,9 +20,5 @@ export class PostCreateComponent implements OnInit {
 
   onAddPost = (): void => {
     this.postService.addPost(this.form.value.title, this.form.value.content);
-    this.postCreated.emit(new Post(
-      this.form.value.title,
-      this.form.value.content
-    ));
   };
 }
