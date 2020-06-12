@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostCreateComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
+  onAddPost = () => {
+    console.log('Clicked!');
+  };
 }
