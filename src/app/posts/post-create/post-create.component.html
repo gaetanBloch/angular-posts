@@ -3,11 +3,11 @@
     <h1>Post</h1>
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input matInput ngModel name="title">
+      <input matInput ngModel name="title" required minlength="3">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Content</mat-label>
-      <textarea matInput rows="6" ngModel name="content"></textarea>
+      <textarea matInput rows="6" ngModel name="content" required></textarea>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">
       Save Post
