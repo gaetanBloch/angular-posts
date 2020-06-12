@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
+  newPost = 'No content';
+  enteredPost = '';
 
   constructor() {
   }
@@ -14,6 +16,6 @@ export class PostCreateComponent implements OnInit {
   }
 
   onAddPost = () => {
-    console.log('Clicked!');
+    this.newPost = this.enteredPost;
   };
 }
