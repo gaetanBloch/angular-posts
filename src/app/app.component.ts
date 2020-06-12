@@ -9,7 +9,6 @@ export class AppComponent {
   storedPosts = [];
 
   onPostCreated = (post): void => {
-    console.log(post);
     this.storedPosts.push(post);
   }
 }

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Post } from '../post.model';
 
@@ -8,9 +9,8 @@ import { Post } from '../post.model';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  title = '';
-  content = '';
   @Output() postCreated = new EventEmitter<Post>();
+  @ViewChild('form', { static: true }) form: NgForm;
 
   constructor() {
   }
@@ -19,6 +19,9 @@ export class PostCreateComponent implements OnInit {
   }
 
   onAddPost = (): void => {
-    this.postCreated.emit(new Post(this.title, this.content));
+    this.postCreated.emit(new Post(
+      this.form.value.title,
+      this.form.value.content
+    ));
   };
 }
