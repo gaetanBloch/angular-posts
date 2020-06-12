@@ -10,4 +10,8 @@ export class PostService {
 
   constructor() {
   }
+
+  getPosts = (): Post[] => {
+    return [...this.posts];
+  }
 }
