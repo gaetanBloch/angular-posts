@@ -9,7 +9,10 @@
       <mat-label>Content</mat-label>
       <textarea matInput rows="6" ngModel name="content" required></textarea>
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid">
       Save Post
     </button>
   </form>
