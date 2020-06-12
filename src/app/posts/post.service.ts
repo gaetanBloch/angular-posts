@@ -8,7 +8,7 @@ import { Post } from './post.model';
 })
 export class PostService {
   private posts: Post[] = [];
-  private postsUpdated: Subject<Post[]>;
+  postsUpdated = new Subject<Post[]>();
 
   constructor() {
   }
