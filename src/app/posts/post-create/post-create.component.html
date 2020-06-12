@@ -1,10 +1,12 @@
 <mat-card>
-  <mat-form-field class="example-full-width">
-    <mat-label>Post</mat-label>
-    <textarea matInput
-              rows="6"
-              placeholder="Ex. New Post"
-              [(ngModel)]="enteredPost"></textarea>
+  <h1>Post</h1>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="title">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Content</mat-label>
+    <textarea matInput rows="6" [(ngModel)]="content"></textarea>
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="onAddPost()">
     Save Post
