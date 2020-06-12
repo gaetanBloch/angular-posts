@@ -14,4 +14,8 @@ export class PostService {
   getPosts = (): Post[] => {
     return [...this.posts];
   }
+
+  addPost = (title: string, content: string): void => {
+    this.posts.push(new Post(title, content));
+  }
 }
