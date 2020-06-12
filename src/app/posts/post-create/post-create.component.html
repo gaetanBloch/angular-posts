@@ -9,13 +9,21 @@
              required minlength="3"
              #title="ngModel">
       <mat-error *ngIf="title.invalid">
-        Please enter a Post title of at least 3 characters
+        Please enter a Post title of at least 3 characters.
       </mat-error>
       <mat-hint align="end">{{ title.value?.length || 0 }}/3</mat-hint>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Content</mat-label>
-      <textarea matInput rows="6" ngModel name="content" required></textarea>
+      <textarea matInput
+                rows="6"
+                ngModel
+                name="content"
+                required
+                #content="ngModel"></textarea>
+      <mat-error *ngIf="content.invalid">
+        Please enter a Post content.
+      </mat-error>
     </mat-form-field>
     <button mat-raised-button
             color="primary"
