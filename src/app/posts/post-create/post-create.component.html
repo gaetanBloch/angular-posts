@@ -1,26 +1,25 @@
 <mat-card>
   <form (ngSubmit)="onAddPost()" [formGroup]="postForm" #form="ngForm">
     <h1>{{ editMode ? 'Edit Post' : 'Save Post' }}</h1>
+
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required [value]="post?.title">
+      <input matInput formControlName="title" required>
       <mat-error *ngIf="title.invalid">
         Please enter a Post title of at least 5 characters.
       </mat-error>
       <mat-hint align="end">{{ title.value?.length || 0 }}/5</mat-hint>
     </mat-form-field>
+
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Content</mat-label>
-      <textarea matInput
-                rows="6"
-                formControlName="content"
-                required
-                [value]="post?.content"></textarea>
+      <textarea matInput rows="6" formControlName="content" required></textarea>
       <mat-error *ngIf="content.invalid">
         Please enter a Post content of at least 5 characters.
       </mat-error>
       <mat-hint align="end">{{ content.value?.length || 0 }}/5</mat-hint>
     </mat-form-field>
+
     <div style="text-align: center">
       <button mat-raised-button
               color="primary"
@@ -29,5 +28,6 @@
         {{ editMode ? 'Edit' : 'Save' }}
       </button>
     </div>
+
   </form>
 </mat-card>

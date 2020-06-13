@@ -14,7 +14,6 @@ export class PostCreateComponent implements OnInit {
   @ViewChild('form') form: NgForm;
   postForm: FormGroup;
   editMode = false;
-  post: Post;
 
   constructor(private postService: PostService,
               private fb: FormBuilder,
@@ -33,8 +32,11 @@ export class PostCreateComponent implements OnInit {
       if (paramMap.has('postId')) {
         this.editMode = true;
         const postId = paramMap.get('postId');
-        this.post = this.postService.getPost(postId);
-        console.log(this.post);
+        const post = this.postService.getPost(postId);
+        this.postForm.patchValue({
+          title: post.title,
+          content: post.content
+        });
       }
     });
   }
