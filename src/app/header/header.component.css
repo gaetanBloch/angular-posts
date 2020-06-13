@@ -1,6 +1,6 @@
 ul {
   list-style: none;
-  padding: O;
+  padding: 0;
   margin: 0;
 }
 
@@ -15,5 +15,5 @@ a:hover {
 }
 
 .spacer {
-  flex: 1 1 auto
+  flex: 1 1 auto;
 }
