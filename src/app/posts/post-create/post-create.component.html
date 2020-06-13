@@ -1,5 +1,5 @@
 <mat-card>
-  <form (ngSubmit)="onAddPost()" [formGroup]="form">
+  <form (ngSubmit)="onAddPost()" [formGroup]="postForm" #form="ngForm">
     <h1>Post</h1>
     <mat-form-field hintLabel="Should be at least 3 characters">
       <mat-label>Title</mat-label>
@@ -20,7 +20,7 @@
       <button mat-raised-button
               color="primary"
               type="submit"
-              [disabled]="form.invalid">
+              [disabled]="postForm.invalid">
         Save Post
       </button>
     </div>
