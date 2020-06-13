@@ -36,6 +36,8 @@ export class PostService {
     this.http.delete('http://localhost:8080/feed/posts/' + postId)
       .subscribe(response => {
         console.log(response);
+        this.posts = this.posts.filter(post => post._id !== postId);
+        this.postsUpdated.next([...this.posts]);
       });
   }
 
