@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PostService } from '../post.service';
 
 @Component({
@@ -8,16 +8,31 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  @ViewChild('form', { static: true }) form: NgForm;
+  // @ViewChild('form', { static: true }) form: NgForm;
+  form: FormGroup;
 
   constructor(private postService: PostService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.form = this.fb.group(
+      {
+        title: [''],
+        content: ['']
+      }
+    );
+  }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get content() {
+    return this.form.get('content');
   }
 
   onAddPost = (): void => {
     this.postService.addPost(this.form.value.title, this.form.value.content);
-    this.form.resetForm();
+    this.form.reset();
   };
 }
