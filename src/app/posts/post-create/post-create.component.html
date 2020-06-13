@@ -3,7 +3,7 @@
     <h1>Post</h1>
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required>
+      <input matInput formControlName="title" required [value]="post?.title">
       <mat-error *ngIf="title.invalid">
         Please enter a Post title of at least 5 characters.
       </mat-error>
@@ -11,7 +11,11 @@
     </mat-form-field>
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Content</mat-label>
-      <textarea matInput rows="6" formControlName="content" required></textarea>
+      <textarea matInput
+                rows="6"
+                formControlName="content"
+                required
+                [value]="post?.content"></textarea>
       <mat-error *ngIf="content.invalid">
         Please enter a Post content of at least 5 characters.
       </mat-error>
