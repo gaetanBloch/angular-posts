@@ -34,6 +34,7 @@ export class PostCreateComponent implements OnInit {
         this.editMode = true;
         const postId = paramMap.get('postId');
         this.post = this.postService.getPost(postId);
+        console.log(this.post);
       }
     });
   }
