@@ -20,11 +20,11 @@ export class PostService {
         this.posts = response.posts;
         this.postsUpdated.next([...this.posts]);
       });
-  }
+  };
 
   getPost = (postId): Post => {
     return { ...this.posts.find(post => post._id === postId) };
-  }
+  };
 
   addPost = (title: string, content: string): void => {
     const post = new Post(title, content);
@@ -35,7 +35,15 @@ export class PostService {
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
       });
-  }
+  };
+
+  updatePost = (postId: string, title: string, content: string): void => {
+    const post = new Post(title, content);
+    this.http.put('http://localhost:8080/feed/posts/' + postId, post)
+      .subscribe(response => {
+        console.log(response);
+      });
+  };
 
   deletePost = (postId: string): void => {
     this.http.delete('http://localhost:8080/feed/posts/' + postId)
@@ -44,9 +52,9 @@ export class PostService {
         this.posts = this.posts.filter(post => post._id !== postId);
         this.postsUpdated.next([...this.posts]);
       });
-  }
+  };
 
   getPostUpdateListener = (): Observable<Post[]> => {
     return this.postsUpdated.asObservable();
-  }
+  };
 }
