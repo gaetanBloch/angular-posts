@@ -1,6 +1,6 @@
 <mat-card>
   <form (ngSubmit)="onAddPost()" [formGroup]="postForm" #form="ngForm">
-    <h1>Post</h1>
+    <h1>{{ editMode ? 'Edit Post' : 'Save Post' }}</h1>
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" required [value]="post?.title">
@@ -26,7 +26,7 @@
               color="primary"
               type="submit"
               [disabled]="postForm.invalid">
-        Save Post
+        {{ editMode ? 'Edit' : 'Save' }}
       </button>
     </div>
   </form>
