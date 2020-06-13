@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { PostService } from '../post.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -10,8 +11,12 @@ import { PostService } from '../post.service';
 export class PostCreateComponent implements OnInit {
   @ViewChild('form') form: NgForm;
   postForm: FormGroup;
+  editMode = false;
+  postId: string;
 
-  constructor(private postService: PostService, private fb: FormBuilder) {
+  constructor(private postService: PostService,
+              private fb: FormBuilder,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -21,6 +26,13 @@ export class PostCreateComponent implements OnInit {
         content: ['', [Validators.required, Validators.minLength(5)]]
       }
     );
+
+    this.route.paramMap.subscribe(paramMap => {
+      if (paramMap.has('postId')) {
+        this.editMode = true;
+        this.postId = paramMap.get('postId');
+      }
+    });
   }
 
   get title() {
