@@ -15,6 +15,7 @@ export class PostCreateComponent implements OnInit {
   postForm: FormGroup;
   editMode = false;
   post: Post;
+  isLoading = false;
 
   constructor(private postService: PostService,
               private fb: FormBuilder,
@@ -34,7 +35,9 @@ export class PostCreateComponent implements OnInit {
       if (paramMap.has('postId')) {
         this.editMode = true;
         const postId = paramMap.get('postId');
+        this.isLoading = true;
         this.postService.getPost(postId).subscribe(post => {
+          this.isLoading = false;
           this.post = post;
           this.postForm.patchValue({
             title: this.post.title,
