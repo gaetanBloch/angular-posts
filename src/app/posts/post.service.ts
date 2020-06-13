@@ -48,13 +48,14 @@ export class PostService {
   };
 
   updatePost = (postId: string, title: string, content: string): void => {
-    const post = new Post(title, content);
+    const post = new Post(title, content, postId);
     this.http.put('http://localhost:8080/feed/posts/' + postId, post)
       .subscribe(response => {
         console.log(response);
-        const updatedPost = this.posts.find(p => p._id === postId);
-        updatedPost.title = title;
-        updatedPost.content = content;
+        const updatedPosts = [...this.posts];
+        const updatedPostIndex = updatedPosts.findIndex(p => p._id === postId);
+        updatedPosts[updatedPostIndex] = post;
+        this.posts = updatedPosts;
         this.notifyPostsUpdate();
       });
   };
