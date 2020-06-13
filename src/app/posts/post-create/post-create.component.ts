@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { PostService } from '../post.service';
 import { Post } from '../post.model';
@@ -18,7 +18,8 @@ export class PostCreateComponent implements OnInit {
 
   constructor(private postService: PostService,
               private fb: FormBuilder,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -66,6 +67,6 @@ export class PostCreateComponent implements OnInit {
       );
     }
 
-    this.form.resetForm();
+    this.router.navigate(['/']);
   };
 }
