@@ -57,6 +57,7 @@ export class PostCreateComponent implements OnInit {
   }
 
   onSavePost = (): void => {
+    this.isLoading = true;
     if (this.editMode) {
       this.postService.updatePost(
         this.post._id,
