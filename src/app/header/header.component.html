@@ -3,9 +3,12 @@
        height="50px"
        alt="Angular">
   <a routerLink="/" style="cursor: pointer">Posts</a>
+  <span class="spacer"></span>
   <ul>
     <li>
-      <a routerLink="/create">Create Post</a>
+      <a mat-button routerLink="/create" routerLinkActive="active">
+        Create Post
+      </a>
     </li>
   </ul>
 </mat-toolbar>

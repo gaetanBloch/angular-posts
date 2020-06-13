@@ -1,1 +1,19 @@
+ul {
+  list-style: none;
+  padding: O;
+  margin: 0;
+}
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a.active,
+a:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.spacer {
+  flex: 1 1 auto
+}
