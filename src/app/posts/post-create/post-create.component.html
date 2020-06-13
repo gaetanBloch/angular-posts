@@ -2,8 +2,7 @@
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form *ngIf="!isLoading"
         (ngSubmit)="onSavePost()"
-        [formGroup]="postForm"
-        #form="ngForm">
+        [formGroup]="postForm">
     <h1>{{ editMode ? 'Edit Post' : 'Save Post' }}</h1>
 
     <mat-form-field hintLabel="Should be at least 5 characters">
