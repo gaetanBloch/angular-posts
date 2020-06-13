@@ -52,19 +52,20 @@ export class PostCreateComponent implements OnInit {
     return this.postForm.get('content');
   }
 
-  onAddPost = (): void => {
-    this.postService.addPost(
-      this.postForm.value.title,
-      this.postForm.value.content
-    );
-    this.form.resetForm();
-  };
+  onSavePost = (): void => {
+    if (this.editMode) {
+      this.postService.updatePost(
+        this.post._id,
+        this.postForm.value.title,
+        this.postForm.value.content
+      );
+    } else {
+      this.postService.addPost(
+        this.postForm.value.title,
+        this.postForm.value.content
+      );
+    }
 
-  onEditPost = (): void => {
-    this.postService.updatePost(
-      this.post._id,
-      this.postForm.value.title,
-      this.postForm.value.content
-    );
+    this.form.resetForm();
   };
 }
