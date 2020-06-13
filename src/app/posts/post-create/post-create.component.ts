@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { PostService } from '../post.service';
 import { ActivatedRoute } from '@angular/router';
+
+import { PostService } from '../post.service';
+import { Post } from '../post.model';
 
 @Component({
   selector: 'app-post-create',
@@ -12,7 +14,7 @@ export class PostCreateComponent implements OnInit {
   @ViewChild('form') form: NgForm;
   postForm: FormGroup;
   editMode = false;
-  postId: string;
+  post: Post;
 
   constructor(private postService: PostService,
               private fb: FormBuilder,
@@ -30,7 +32,8 @@ export class PostCreateComponent implements OnInit {
     this.route.paramMap.subscribe(paramMap => {
       if (paramMap.has('postId')) {
         this.editMode = true;
-        this.postId = paramMap.get('postId');
+        const postId = paramMap.get('postId');
+        this.post = this.postService.getPost(postId);
       }
     });
   }
