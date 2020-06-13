@@ -1,5 +1,7 @@
 <mat-card>
-  <form (ngSubmit)="onAddPost()" [formGroup]="postForm" #form="ngForm">
+  <form (ngSubmit)="editMode ? onEditPost() : onAddPost()"
+        [formGroup]="postForm"
+        #form="ngForm">
     <h1>{{ editMode ? 'Edit Post' : 'Save Post' }}</h1>
 
     <mat-form-field hintLabel="Should be at least 5 characters">
