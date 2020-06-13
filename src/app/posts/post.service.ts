@@ -32,6 +32,13 @@ export class PostService {
       });
   }
 
+  deletePost = (postId: string): void => {
+    this.http.delete('http://localhost:8080/feed/posts/' + postId)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
   getPostUpdateListener = (): Observable<Post[]> => {
     return this.postsUpdated.asObservable();
   }
