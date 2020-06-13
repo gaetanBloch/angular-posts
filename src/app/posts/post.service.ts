@@ -15,8 +15,7 @@ export class PostService {
   }
 
   getPosts = (): void => {
-    this.http.get<{ message: string, posts: Post[] }>
-    ('http://localhost:8080/feed/posts')
+    this.http.get<{ posts: Post[] }>('http://localhost:8080/feed/posts')
       .subscribe(response => {
         this.posts = response.posts;
         this.postsUpdated.next([...this.posts]);
@@ -24,8 +23,13 @@ export class PostService {
   }
 
   addPost = (title: string, content: string): void => {
-    this.posts.push(new Post(title, content));
-    this.postsUpdated.next([...this.posts]);
+    const post = new Post(title, content);
+    this.http.post('http://localhost:8080/feed/posts', post)
+      .subscribe(response => {
+        console.log(response);
+        this.posts.push(post);
+        this.postsUpdated.next([...this.posts]);
+      });
   }
 
   getPostUpdateListener = (): Observable<Post[]> => {

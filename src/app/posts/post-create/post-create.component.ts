@@ -8,7 +8,7 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  @ViewChild('form', { static: true }) form: NgForm;
+  @ViewChild('form') form: NgForm;
   postForm: FormGroup;
 
   constructor(private postService: PostService, private fb: FormBuilder) {
@@ -18,7 +18,7 @@ export class PostCreateComponent implements OnInit {
     this.postForm = this.fb.group(
       {
         title: ['', [Validators.required, Validators.minLength(5)]],
-        content: ['', Validators.required, Validators.minLength(5)]
+        content: ['', [Validators.required, Validators.minLength(5)]]
       }
     );
   }
@@ -32,7 +32,10 @@ export class PostCreateComponent implements OnInit {
   }
 
   onAddPost = (): void => {
-    this.postService.addPost(this.postForm.value.title, this.postForm.value.content);
+    this.postService.addPost(
+      this.postForm.value.title,
+      this.postForm.value.content
+    );
     this.form.resetForm();
   };
 }
