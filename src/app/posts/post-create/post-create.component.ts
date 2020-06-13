@@ -33,10 +33,12 @@ export class PostCreateComponent implements OnInit {
       if (paramMap.has('postId')) {
         this.editMode = true;
         const postId = paramMap.get('postId');
-        this.post = this.postService.getPost(postId);
-        this.postForm.patchValue({
-          title: this.post.title,
-          content: this.post.content
+        this.postService.getPost(postId).subscribe(post => {
+          this.post = post;
+          this.postForm.patchValue({
+            title: this.post.title,
+            content: this.post.content
+          });
         });
       }
     });

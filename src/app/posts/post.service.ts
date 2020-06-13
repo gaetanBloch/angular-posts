@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Post } from './post.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,17 @@ export class PostService {
       });
   };
 
-  getPost = (postId): Post => {
-    return { ...this.posts.find(post => post._id === postId) };
+  getPost = (postId): Observable<Post> => {
+    const post = this.posts.find(p => p._id === postId);
+    if (post) {
+      return new Observable<Post>(observer => {
+        observer.next({ ...post });
+      });
+    } else {
+      return this.http.get<{ post: Post }>
+      ('http://localhost:8080/feed/posts/' + postId)
+        .pipe(map(response => response.post));
+    }
   };
 
   addPost = (title: string, content: string): void => {
