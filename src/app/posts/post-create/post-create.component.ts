@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../post.service';
 
 @Component({
@@ -17,8 +17,8 @@ export class PostCreateComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group(
       {
-        title: [''],
-        content: ['']
+        title: ['', [Validators.required, Validators.minLength(3)]],
+        content: ['', Validators.required]
       }
     );
   }
