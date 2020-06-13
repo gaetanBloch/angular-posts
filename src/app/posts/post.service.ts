@@ -22,6 +22,10 @@ export class PostService {
       });
   }
 
+  getPost = (postId): Post => {
+    return { ...this.posts.find(post => post._id === postId) };
+  }
+
   addPost = (title: string, content: string): void => {
     const post = new Post(title, content);
     this.http.post<{ post: Post }>('http://localhost:8080/feed/posts', post)
