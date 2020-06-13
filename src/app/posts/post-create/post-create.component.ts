@@ -1,7 +1,5 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-
-import { Post } from '../post.model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, NgForm } from '@angular/forms';
 import { PostService } from '../post.service';
 
 @Component({
@@ -12,7 +10,7 @@ import { PostService } from '../post.service';
 export class PostCreateComponent implements OnInit {
   @ViewChild('form', { static: true }) form: NgForm;
 
-  constructor(private postService: PostService) {
+  constructor(private postService: PostService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
