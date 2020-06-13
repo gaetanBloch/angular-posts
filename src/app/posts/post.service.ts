@@ -18,7 +18,7 @@ export class PostService {
     this.http.get<{ posts: Post[] }>('http://localhost:8080/feed/posts')
       .subscribe(response => {
         this.posts = response.posts;
-        this.postsUpdated.next([...this.posts]);
+        this.notifyPostsUpdate();
       });
   };
 
@@ -33,7 +33,7 @@ export class PostService {
         console.log(response);
         post._id = response.post._id;
         this.posts.push(post);
-        this.postsUpdated.next([...this.posts]);
+        this.notifyPostsUpdate();
       });
   };
 
@@ -42,6 +42,10 @@ export class PostService {
     this.http.put('http://localhost:8080/feed/posts/' + postId, post)
       .subscribe(response => {
         console.log(response);
+        const updatedPost = this.posts.find(p => p._id === postId);
+        updatedPost.title = title;
+        updatedPost.content = content;
+        this.notifyPostsUpdate();
       });
   };
 
@@ -50,11 +54,15 @@ export class PostService {
       .subscribe(response => {
         console.log(response);
         this.posts = this.posts.filter(post => post._id !== postId);
-        this.postsUpdated.next([...this.posts]);
+        this.notifyPostsUpdate();
       });
   };
 
   getPostUpdateListener = (): Observable<Post[]> => {
     return this.postsUpdated.asObservable();
+  };
+
+  private notifyPostsUpdate = () => {
+    this.postsUpdated.next([...this.posts]);
   };
 }
