@@ -24,9 +24,10 @@ export class PostService {
 
   addPost = (title: string, content: string): void => {
     const post = new Post(title, content);
-    this.http.post('http://localhost:8080/feed/posts', post)
+    this.http.post<{ post: Post }>('http://localhost:8080/feed/posts', post)
       .subscribe(response => {
         console.log(response);
+        post._id = response.post._id;
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
       });
