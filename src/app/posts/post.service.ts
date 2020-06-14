@@ -20,12 +20,16 @@ export class PostService {
 
   getPosts = (postsPerPage: number, currentPage: number): void => {
     const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
-    this.http.get<{ posts: Post[] }>(URL_POSTS + queryParams)
-      .subscribe(response => {
-        this.posts = response.posts.map(post => ({
-          ...post,
-          imageUrl: URL_PREFIX + post.imageUrl
-        }));
+    this.http.get<{ posts: Post[], totalItems: number }>
+    (URL_POSTS + queryParams)
+      .pipe(
+        map(response => response.posts.map(post => ({
+            ...post,
+            imageUrl: URL_PREFIX + post.imageUrl
+          }))
+        ))
+      .subscribe(posts => {
+        this.posts = posts;
         this.notifyPostsUpdate();
       });
   };
