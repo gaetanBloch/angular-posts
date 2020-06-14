@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Post } from './post.model';
 import { map } from 'rxjs/operators';
 
+const URL = 'http://localhost:8080/feed/posts/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +18,7 @@ export class PostService {
   }
 
   getPosts = (): void => {
-    this.http.get<{ posts: Post[] }>('http://localhost:8080/feed/posts')
+    this.http.get<{ posts: Post[] }>(URL)
       .subscribe(response => {
         this.posts = response.posts;
         this.notifyPostsUpdate();
@@ -31,15 +33,14 @@ export class PostService {
         observer.complete();
       });
     } else {
-      return this.http.get<{ post: Post }>
-      ('http://localhost:8080/feed/posts/' + postId)
+      return this.http.get<{ post: Post }>(URL + postId)
         .pipe(map(response => response.post));
     }
   };
 
   addPost = (title: string, content: string): void => {
     const post = new Post(title, content);
-    this.http.post<{ post: Post }>('http://localhost:8080/feed/posts', post)
+    this.http.post<{ post: Post }>(URL, post)
       .subscribe(response => {
         console.log(response);
         post._id = response.post._id;
@@ -50,7 +51,7 @@ export class PostService {
 
   updatePost = (postId: string, title: string, content: string): void => {
     const post = new Post(title, content, postId);
-    this.http.put('http://localhost:8080/feed/posts/' + postId, post)
+    this.http.put(URL + postId, post)
       .subscribe(response => {
         console.log(response);
         const updatedPosts = [...this.posts];
@@ -62,7 +63,7 @@ export class PostService {
   };
 
   deletePost = (postId: string): void => {
-    this.http.delete('http://localhost:8080/feed/posts/' + postId)
+    this.http.delete(URL + postId)
       .subscribe(response => {
         console.log(response);
         this.posts = this.posts.filter(post => post._id !== postId);
