@@ -73,7 +73,8 @@ export class PostCreateComponent implements OnInit {
     } else {
       this.postService.addPost(
         this.postForm.value.title,
-        this.postForm.value.content
+        this.postForm.value.content,
+        this.postForm.value.image
       );
     }
 

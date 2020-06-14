@@ -38,13 +38,15 @@ export class PostService {
     }
   };
 
-  addPost = (title: string, content: string): void => {
-    const post = new Post(title, content);
-    this.http.post<{ post: Post }>(URL, post)
+  addPost = (title: string, content: string, image: File): void => {
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('content', content);
+    postData.append('image', image, title);
+    this.http.post<{ post: Post }>(URL, postData)
       .subscribe(response => {
         console.log(response);
-        post._id = response.post._id;
-        this.posts.push(post);
+        this.posts.push(response.post);
         this.notifyPostsUpdate();
       });
   };
