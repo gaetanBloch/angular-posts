@@ -10,3 +10,9 @@
 mat-spinner {
   margin: auto;
 }
+
+.post-image,
+.post-image img {
+  text-align: center;
+  height: 10rem;
+}
