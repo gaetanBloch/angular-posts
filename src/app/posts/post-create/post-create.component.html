@@ -15,7 +15,10 @@
     </mat-form-field>
 
     <div>
-      <button mat-stroked-button type="button">Pick Image</button>
+      <button mat-stroked-button
+              type="button"
+              (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker>
     </div>
 
     <mat-form-field hintLabel="Should be at least 5 characters">
