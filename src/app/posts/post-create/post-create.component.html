@@ -14,6 +14,10 @@
       <mat-hint align="end">{{ title.value?.length || 0 }}/5</mat-hint>
     </mat-form-field>
 
+    <div>
+      <button mat-stroked-button type="button">Pick Image</button>
+    </div>
+
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Content</mat-label>
       <textarea matInput rows="6" formControlName="content" required></textarea>
