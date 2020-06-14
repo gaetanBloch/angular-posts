@@ -14,9 +14,17 @@ export class AuthService {
 
   createUser = (email: string, name: string, password: string): void => {
     const user: User = { email, name, password };
-    this.http.post(URL_PREFIX + '/auth/signup', user)
+    this.http.put(URL_PREFIX + 'auth/signup', user)
       .subscribe(response => {
         console.log(response);
       });
   };
+
+  login = (email: string, password: string): void => {
+    const user: User = { email, password };
+    this.http.post(URL_PREFIX + 'auth/login', user)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
 }
