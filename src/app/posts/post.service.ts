@@ -28,6 +28,7 @@ export class PostService {
     if (post) {
       return new Observable<Post>(observer => {
         observer.next({ ...post });
+        observer.complete();
       });
     } else {
       return this.http.get<{ post: Post }>
