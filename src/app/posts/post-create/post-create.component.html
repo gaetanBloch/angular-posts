@@ -19,10 +19,10 @@
               type="button"
               (click)="filePicker.click()">Pick Image</button>
       <input type="file" #filePicker (change)="onImagePicked($event)">
-    </div>
 
-    <div class="image-preview" *ngIf="imagePreview">
-      <img [src]="imagePreview" [alt]="postForm.value.title">
+      <div class="image-preview" *ngIf="imagePreview">
+        <img [src]="imagePreview" [alt]="postForm.value.title">
+      </div>
     </div>
 
     <mat-form-field hintLabel="Should be at least 5 characters">

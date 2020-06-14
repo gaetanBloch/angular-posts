@@ -18,3 +18,12 @@ form > * {
 input[type=file] {
   visibility: hidden;
 }
+
+.image-preview {
+  height: 5rem;
+  margin-top: 1rem;
+}
+
+.image-preview img {
+  max-height: 100%;
+}
