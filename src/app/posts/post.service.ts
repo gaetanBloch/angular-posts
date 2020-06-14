@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Post } from './post.model';
@@ -32,10 +32,7 @@ export class PostService {
   getPost = (postId): Observable<Post> => {
     const post = this.posts.find(p => p._id === postId);
     if (post) {
-      return new Observable<Post>(observer => {
-        observer.next({ ...post });
-        observer.complete();
-      });
+      return of({ ...post });
     } else {
       return this.http.get<{ post: Post }>(URL_POSTS + postId)
         .pipe(map(response => ({
