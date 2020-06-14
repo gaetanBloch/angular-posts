@@ -46,10 +46,7 @@ export class PostService {
   };
 
   addPost = (title: string, content: string, image: File): void => {
-    const postData = new FormData();
-    postData.append('title', title);
-    postData.append('content', content);
-    postData.append('image', image, title);
+    const postData = this.createFormData(title, content, image);
     this.http.post<{ post: Post }>(URL_POSTS, postData)
       .subscribe(response => {
         console.log(response);
@@ -58,14 +55,28 @@ export class PostService {
       });
   };
 
-  updatePost = (postId: string, title: string, content: string): void => {
-    const post: Post = { _id: postId, title, content, imageUrl: ''};
-    this.http.put(URL_POSTS + postId, post)
+  updatePost = (postId: string,
+                title: string,
+                content: string,
+                image: File | string): void => {
+
+    // We have to differentiate if we get a File or simply the image URL string
+    let postData: FormData | Post;
+    if (typeof image === 'object') {
+      postData = this.createFormData(title, content, image);
+    } else {
+      postData = { _id: postId, title, content, imageUrl: image };
+    }
+
+    this.http.put<{ post: Post }>(URL_POSTS + postId, postData)
       .subscribe(response => {
         console.log(response);
         const updatedPosts = [...this.posts];
         const updatedPostIndex = updatedPosts.findIndex(p => p._id === postId);
-        updatedPosts[updatedPostIndex] = post;
+        updatedPosts[updatedPostIndex] = {
+          ...response.post,
+          imageUrl: URL_PREFIX + response.post.imageUrl
+        };
         this.posts = updatedPosts;
         this.notifyPostsUpdate();
       });
@@ -86,5 +97,13 @@ export class PostService {
 
   private notifyPostsUpdate = () => {
     this.postsUpdated.next([...this.posts]);
+  };
+
+  private createFormData = (title, content, image): FormData => {
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('content', content);
+    postData.append('image', image, title);
+    return postData;
   };
 }

@@ -43,7 +43,8 @@ export class PostCreateComponent implements OnInit {
           this.post = post;
           this.postForm.patchValue({
             title: this.post.title,
-            content: this.post.content
+            content: this.post.content,
+            image: this.post.imageUrl
           });
         });
       }
@@ -68,7 +69,8 @@ export class PostCreateComponent implements OnInit {
       this.postService.updatePost(
         this.post._id,
         this.postForm.value.title,
-        this.postForm.value.content
+        this.postForm.value.content,
+        this.postForm.value.image
       );
     } else {
       this.postService.addPost(
