@@ -14,7 +14,7 @@ const URL_POSTS = URL_PREFIX + 'feed/posts';
 export class PostService {
   private posts: Post[] = [];
   private postCount = 0;
-  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
 
   constructor(private http: HttpClient) {
   }
@@ -57,7 +57,10 @@ export class PostService {
     this.http.post<{ post: Post }>(URL_POSTS, postData)
       .subscribe(response => {
         console.log(response);
-        this.posts.push(response.post);
+        this.posts.push({
+          ...response.post,
+          imageUrl: URL_PREFIX + response.post.imageUrl
+        });
         this.postCount++;
         this.notifyPostsUpdate();
       });
@@ -73,7 +76,7 @@ export class PostService {
     if (typeof image === 'object') {
       postData = this.createFormData(title, content, image, postId);
     } else {
-      postData = { _id: postId, title, content, imageUrl: image };
+      postData = { _id: postId, title, content, image };
     }
 
     this.http.put<{ post: Post }>(URL_POSTS + '/' + postId, postData)
@@ -100,12 +103,15 @@ export class PostService {
       });
   };
 
-  getPostUpdateListener = (): Observable<{posts: Post[], postCount: number}> => {
+  getPostUpdateListener = (): Observable<{ posts: Post[], postCount: number }> => {
     return this.postsUpdated.asObservable();
   };
 
   private notifyPostsUpdate = () => {
-    this.postsUpdated.next({posts: [...this.posts], postCount: this.postCount});
+    this.postsUpdated.next({
+      posts: [...this.posts],
+      postCount: this.postCount
+    });
   };
 
   private createFormData = (title, content, image, id = null): FormData => {

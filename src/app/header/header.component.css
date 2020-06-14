@@ -11,8 +11,8 @@ a {
   margin: 5px;
 }
 
-a.active,
-a:hover {
+a[mat-button].active,
+a[mat-button]:hover {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
