@@ -23,12 +23,13 @@
 
   </mat-accordion>
 
-  <mat-paginator [length]="totalPosts"
-                 [pageSize]="postsPerPage"
-                 [pageSizeOptions]="pageSizeOptions"
-  (page)="onPageChanged($event)"></mat-paginator>
-
   <ng-template #noPost>
     <p class="info-text mat-body-1">No Posts added yet...</p>
   </ng-template>
 </div>
+
+<mat-paginator [length]="totalPosts"
+               [pageSize]="postsPerPage"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPageChanged($event)"
+               *ngIf="posts.length > 0"></mat-paginator>
