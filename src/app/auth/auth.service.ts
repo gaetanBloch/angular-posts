@@ -8,8 +8,14 @@ import { User } from './user.model';
   providedIn: 'root'
 })
 export class AuthService {
+  private token: string;
+  private userId: string;
 
   constructor(private http: HttpClient) {
+  }
+
+  getToken = (): string => {
+    return this.token;
   }
 
   createUser = (email: string, name: string, password: string): void => {
@@ -22,9 +28,11 @@ export class AuthService {
 
   login = (email: string, password: string): void => {
     const user: User = { email, password };
-    this.http.post(URL_PREFIX + 'auth/login', user)
+    this.http.post<{token: string, userId: string}>
+    (URL_PREFIX + 'auth/login', user)
       .subscribe(response => {
-        console.log(response);
+        this.token = response.token;
+        this.userId = response.userId;
       });
   }
 }
