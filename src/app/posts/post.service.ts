@@ -60,7 +60,7 @@ export class PostService {
     // We have to differentiate if we get a File or simply the image URL string
     let postData: FormData | Post;
     if (typeof image === 'object') {
-      postData = this.createFormData(title, content, image);
+      postData = this.createFormData(title, content, image, postId);
     } else {
       postData = { _id: postId, title, content, imageUrl: image };
     }
@@ -96,8 +96,9 @@ export class PostService {
     this.postsUpdated.next([...this.posts]);
   };
 
-  private createFormData = (title, content, image): FormData => {
+  private createFormData = (title, content, image, id = null): FormData => {
     const postData = new FormData();
+    postData.append('_id', id);
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image, title);
