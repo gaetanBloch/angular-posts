@@ -5,7 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Post } from './post.model';
 import { map } from 'rxjs/operators';
 
-const URL = 'http://localhost:8080/feed/posts/';
+const URL_PREFIX = 'http://localhost:8080/';
+const URL_POSTS = URL_PREFIX + 'feed/posts/';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,12 @@ export class PostService {
   }
 
   getPosts = (): void => {
-    this.http.get<{ posts: Post[] }>(URL)
+    this.http.get<{ posts: Post[] }>(URL_POSTS)
       .subscribe(response => {
-        this.posts = response.posts;
+        this.posts = response.posts.map(post => ({
+          ...post,
+          imageUrl: URL_PREFIX + post.imageUrl
+        }));
         this.notifyPostsUpdate();
       });
   };
@@ -33,8 +37,11 @@ export class PostService {
         observer.complete();
       });
     } else {
-      return this.http.get<{ post: Post }>(URL + postId)
-        .pipe(map(response => response.post));
+      return this.http.get<{ post: Post }>(URL_POSTS + postId)
+        .pipe(map(response => ({
+          ...response.post,
+          imageUrl: URL_PREFIX + response.post.imageUrl
+        })));
     }
   };
 
@@ -43,7 +50,7 @@ export class PostService {
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image, title);
-    this.http.post<{ post: Post }>(URL, postData)
+    this.http.post<{ post: Post }>(URL_POSTS, postData)
       .subscribe(response => {
         console.log(response);
         this.posts.push(response.post);
@@ -52,8 +59,8 @@ export class PostService {
   };
 
   updatePost = (postId: string, title: string, content: string): void => {
-    const post = new Post(title, content, postId);
-    this.http.put(URL + postId, post)
+    const post: Post = { _id: postId, title, content, imageUrl: ''};
+    this.http.put(URL_POSTS + postId, post)
       .subscribe(response => {
         console.log(response);
         const updatedPosts = [...this.posts];
@@ -65,7 +72,7 @@ export class PostService {
   };
 
   deletePost = (postId: string): void => {
-    this.http.delete(URL + postId)
+    this.http.delete(URL_POSTS + postId)
       .subscribe(response => {
         console.log(response);
         this.posts = this.posts.filter(post => post._id !== postId);
