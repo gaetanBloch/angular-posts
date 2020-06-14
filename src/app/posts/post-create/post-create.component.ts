@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { PostService } from '../post.service';
@@ -11,7 +11,6 @@ import { Post } from '../post.model';
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  @ViewChild('form') form: NgForm;
   postForm: FormGroup;
   editMode = false;
   post: Post;
@@ -26,8 +25,9 @@ export class PostCreateComponent implements OnInit {
   ngOnInit(): void {
     this.postForm = this.fb.group(
       {
-        title: ['', [Validators.required, Validators.minLength(5)]],
-        content: ['', [Validators.required, Validators.minLength(5)]]
+        title: [null, [Validators.required, Validators.minLength(5)]],
+        content: [null, [Validators.required, Validators.minLength(5)]],
+        image: [null, [Validators.required]]
       }
     );
 
@@ -56,6 +56,10 @@ export class PostCreateComponent implements OnInit {
     return this.postForm.get('content');
   }
 
+  get image() {
+    return this.postForm.get('image');
+  }
+
   onSavePost = (): void => {
     this.isLoading = true;
     if (this.editMode) {
@@ -72,5 +76,13 @@ export class PostCreateComponent implements OnInit {
     }
 
     this.router.navigate(['/']);
+  };
+
+  onImagePicked = (event: Event): void => {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.postForm.patchValue({
+      image: file
+    });
+    this.image.updateValueAndValidity();
   };
 }
