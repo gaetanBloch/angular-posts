@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
-import { Post } from './post.model';
 import { map } from 'rxjs/operators';
 
-const URL_PREFIX = 'http://localhost:8080/';
+import { Post } from './post.model';
+import { URL_PREFIX } from '../utils';
+
 const URL_POSTS = URL_PREFIX + 'feed/posts';
 
 @Injectable({
