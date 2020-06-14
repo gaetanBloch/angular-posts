@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PostService } from '../post.service';
 import { Post } from '../post.model';
+import { mimeType } from './mime-type.validation';
 
 @Component({
   selector: 'app-post-create',
@@ -28,7 +29,7 @@ export class PostCreateComponent implements OnInit {
       {
         title: [null, [Validators.required, Validators.minLength(5)]],
         content: [null, [Validators.required, Validators.minLength(5)]],
-        image: [null, [Validators.required]]
+        image: [null, [Validators.required], mimeType]
       }
     );
 
