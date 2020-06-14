@@ -13,7 +13,8 @@ const URL_POSTS = URL_PREFIX + 'feed/posts';
 })
 export class PostService {
   private posts: Post[] = [];
-  private postsUpdated = new Subject<Post[]>();
+  private postCount = 0;
+  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
 
   constructor(private http: HttpClient) {
   }
@@ -33,6 +34,7 @@ export class PostService {
         ))
       .subscribe(postsData => {
         this.posts = postsData.posts;
+        this.postCount = postsData.maxPosts;
         this.notifyPostsUpdate();
       });
   };
@@ -56,6 +58,7 @@ export class PostService {
       .subscribe(response => {
         console.log(response);
         this.posts.push(response.post);
+        this.postCount++;
         this.notifyPostsUpdate();
       });
   };
@@ -92,16 +95,17 @@ export class PostService {
       .subscribe(response => {
         console.log(response);
         this.posts = this.posts.filter(post => post._id !== postId);
+        this.postCount--;
         this.notifyPostsUpdate();
       });
   };
 
-  getPostUpdateListener = (): Observable<Post[]> => {
+  getPostUpdateListener = (): Observable<{posts: Post[], postCount: number}> => {
     return this.postsUpdated.asObservable();
   };
 
   private notifyPostsUpdate = () => {
-    this.postsUpdated.next([...this.posts]);
+    this.postsUpdated.next({posts: [...this.posts], postCount: this.postCount});
   };
 
   private createFormData = (title, content, image, id = null): FormData => {
