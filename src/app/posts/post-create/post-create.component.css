@@ -10,3 +10,7 @@ h1 {
 mat-spinner {
   margin: auto;
 }
+
+form > * {
+  margin: 10px 0;
+}
