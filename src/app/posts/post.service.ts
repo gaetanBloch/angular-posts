@@ -6,7 +6,7 @@ import { Post } from './post.model';
 import { map } from 'rxjs/operators';
 
 const URL_PREFIX = 'http://localhost:8080/';
-const URL_POSTS = URL_PREFIX + 'feed/posts/';
+const URL_POSTS = URL_PREFIX + 'feed/posts';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,9 @@ export class PostService {
   constructor(private http: HttpClient) {
   }
 
-  getPosts = (): void => {
-    this.http.get<{ posts: Post[] }>(URL_POSTS)
+  getPosts = (postsPerPage: number, currentPage: number): void => {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
+    this.http.get<{ posts: Post[] }>(URL_POSTS + queryParams)
       .subscribe(response => {
         this.posts = response.posts.map(post => ({
           ...post,
@@ -34,7 +35,7 @@ export class PostService {
     if (post) {
       return of({ ...post });
     } else {
-      return this.http.get<{ post: Post }>(URL_POSTS + postId)
+      return this.http.get<{ post: Post }>(URL_POSTS + '/' + postId)
         .pipe(map(response => ({
           ...response.post,
           imageUrl: URL_PREFIX + response.post.imageUrl
@@ -65,7 +66,7 @@ export class PostService {
       postData = { _id: postId, title, content, imageUrl: image };
     }
 
-    this.http.put<{ post: Post }>(URL_POSTS + postId, postData)
+    this.http.put<{ post: Post }>(URL_POSTS + '/' + postId, postData)
       .subscribe(response => {
         console.log(response);
         const updatedPosts = [...this.posts];
@@ -80,7 +81,7 @@ export class PostService {
   };
 
   deletePost = (postId: string): void => {
-    this.http.delete(URL_POSTS + postId)
+    this.http.delete(URL_POSTS + '/' + postId)
       .subscribe(response => {
         console.log(response);
         this.posts = this.posts.filter(post => post._id !== postId);
