@@ -26,14 +26,16 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.getPosts();
     this.postsSubscription = this.postService.getPostUpdateListener()
-      .subscribe(posts => {
+      .subscribe(postsData => {
           this.isLoading = false;
-          this.posts = posts;
+          this.posts = postsData.posts;
+          this.totalPosts = postsData.postCount;
         }
       );
   }
 
   onDelete = (postId): void => {
+    this.isLoading = true;
     this.postService.deletePost(postId);
   };
 
