@@ -1,0 +1,15 @@
+mat-form-field{
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+form > * {
+  margin: 10px 0;
+}
