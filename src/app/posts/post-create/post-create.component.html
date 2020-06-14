@@ -20,7 +20,7 @@
               (click)="filePicker.click()">Pick Image</button>
       <input type="file" #filePicker (change)="onImagePicked($event)">
 
-      <div class="image-preview" *ngIf="imagePreview">
+      <div class="image-preview" *ngIf="imagePreview && image.valid">
         <img [src]="imagePreview" [alt]="postForm.value.title">
       </div>
     </div>
