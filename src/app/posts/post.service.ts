@@ -23,13 +23,16 @@ export class PostService {
     this.http.get<{ posts: Post[], totalItems: number }>
     (URL_POSTS + queryParams)
       .pipe(
-        map(response => response.posts.map(post => ({
-            ...post,
-            imageUrl: URL_PREFIX + post.imageUrl
-          }))
+        map(response => ({
+            posts: response.posts.map(post => ({
+              ...post,
+              imageUrl: URL_PREFIX + post.imageUrl
+            })),
+            maxPosts: response.totalItems
+          })
         ))
-      .subscribe(posts => {
-        this.posts = posts;
+      .subscribe(postsData => {
+        this.posts = postsData.posts;
         this.notifyPostsUpdate();
       });
   };
