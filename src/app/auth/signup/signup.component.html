@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form *ngIf="!isLoading"
+        (ngSubmit)="onSignup()"
+        [formGroup]="signupForm">
+
+    <h1>Signup</h1>
+
+    <mat-form-field>
+      <mat-label>E-Mail Address</mat-label>
+      <input matInput formControlName="email" required>
+      <mat-error *ngIf="email.invalid">
+        Please enter a Valid E-mail Address.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>User Name</mat-label>
+      <input matInput type="text" formControlName="name" required>
+      <mat-error *ngIf="name.invalid">
+        Please enter a user name value.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field hintLabel="Should be at least 5 characters">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" required>
+      <mat-error *ngIf="password.invalid">
+        Please a password with at least 5 characters.
+      </mat-error>
+      <mat-hint align="end">{{ password.value?.length || 0 }}/5</mat-hint>
+    </mat-form-field>
+
+    <div style="text-align: center">
+      <button mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="signupForm.invalid">
+        Signup
+      </button>
+    </div>
+
+  </form>
+</mat-card>
