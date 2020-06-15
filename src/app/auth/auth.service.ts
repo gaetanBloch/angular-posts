@@ -38,7 +38,7 @@ export class AuthService {
     const user: User = { email, name, password };
     this.http.put(URL_PREFIX + 'auth/signup', user)
       .subscribe(
-        () => this.router.navigate(['/login']),
+        () => this.router.navigate(['/auth/login']),
         error => {
           this.authStatusListener.next(false);
         }

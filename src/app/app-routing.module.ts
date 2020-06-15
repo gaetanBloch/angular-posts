@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SignupComponent } from './auth/signup/signup.component';
-import { LoginComponent } from './auth/login/login.component';
-import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-
+  {
+    path: '', loadChildren: () => import('./posts/posts.module')
+      .then(module => module.PostsModule)
+  },
+  {
+    path: 'auth', loadChildren: () => import('./auth/auth.module')
+      .then(module => module.AuthModule)
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [AuthGuard]
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }
