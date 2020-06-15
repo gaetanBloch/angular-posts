@@ -93,14 +93,8 @@ export class PostService {
       });
   };
 
-  deletePost = (postId: string): void => {
-    this.http.delete(URL_POSTS + '/' + postId)
-      .subscribe(response => {
-        console.log(response);
-        this.posts = this.posts.filter(post => post._id !== postId);
-        this.postCount--;
-        this.notifyPostsUpdate();
-      });
+  deletePost = (postId: string): Observable<any> => {
+    return this.http.delete(URL_POSTS + '/' + postId);
   };
 
   getPostUpdateListener = (): Observable<{ posts: Post[], postCount: number }> => {
