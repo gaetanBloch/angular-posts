@@ -13,7 +13,6 @@ const AUTH_DATA = 'posts-auth-data';
   providedIn: 'root'
 })
 export class AuthService {
-
   private isAuth = false;
   private token: string;
   private userId: string;
@@ -25,6 +24,14 @@ export class AuthService {
 
   getToken = (): string => {
     return this.token;
+  };
+
+  getUserId = (): string => {
+    return this.userId;
+  };
+
+  isAuthenticated = (): boolean => {
+    return this.isAuth;
   };
 
   createUser = (email: string, name: string, password: string): void => {
@@ -96,10 +103,6 @@ export class AuthService {
 
   getAuthStatusListener = (): Observable<boolean> => {
     return this.authStatusListener.asObservable();
-  };
-
-  isAuthenticated = (): boolean => {
-    return this.isAuth;
   };
 
   private setAuthTimeout = (duration: number) => {
