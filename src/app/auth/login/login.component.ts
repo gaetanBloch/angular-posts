@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private authStatusSubscription = new Subscription();
   loginForm: FormGroup;
   isLoading = false;
 
@@ -18,6 +20,8 @@ export class LoginComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(5)]]
     });
+    this.authStatusSubscription = this.authService.getAuthStatusListener()
+      .subscribe(() => this.isLoading = false);
   }
 
   get email() {
@@ -28,11 +32,17 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  onLogin = () => {
+  onLogin = (): void => {
     this.isLoading = true;
     this.authService.login(
       this.loginForm.value.email,
       this.loginForm.value.password
     );
   };
+
+  ngOnDestroy(): void {
+    if (this.authStatusSubscription) {
+      this.authStatusSubscription.unsubscribe();
+    }
+  }
 }

@@ -38,7 +38,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     return this.signupForm.get('password');
   }
 
-  onSignup = () => {
+  onSignup = (): void => {
     this.isLoading = true;
     this.authService.createUser(
       this.signupForm.value.email,
@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     );
   };
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.authStatusSubscription) {
       this.authStatusSubscription.unsubscribe();
     }
