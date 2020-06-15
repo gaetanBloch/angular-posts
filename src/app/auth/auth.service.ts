@@ -123,9 +123,8 @@ export class AuthService {
 
   private getAuthData = (): AuthData => {
     const authDataStored = localStorage.getItem(AUTH_DATA);
-    const authData: AuthData = JSON.parse(authDataStored);
-    if (authData.token) {
-      return authData;
+    if (authDataStored) {
+      return JSON.parse(authDataStored);
     }
     return null;
   };
