@@ -13,6 +13,7 @@ export class AuthService {
   private isAuth = false;
   private token: string;
   private userId: string;
+  private tokenTimeout: any;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient, private router: Router) {
@@ -32,12 +33,20 @@ export class AuthService {
 
   login = (email: string, password: string): void => {
     const user: User = { email, password };
-    this.http.post<{ token: string, userId: string }>
+    this.http.post<{ token: string, userId: string, expiresIn: number }>
     (URL_PREFIX + 'auth/login', user)
       .subscribe(response => {
         this.token = response.token;
-        this.userId = response.userId;
         if (this.token) {
+
+          // Auto Logout after timeout expires
+          const expiresIn = +response.expiresIn;
+          console.log(`The token will expire in ${expiresIn} seconds`);
+          this.tokenTimeout = setTimeout(() => {
+            this.logout();
+          }, expiresIn * 1000);
+
+          this.userId = response.userId;
           this.authStatusListener.next(true);
           this.isAuth = true;
           this.router.navigate(['/']);
@@ -51,6 +60,7 @@ export class AuthService {
     this.authStatusListener.next(false);
     this.isAuth = false;
     this.router.navigate(['/']);
+    clearTimeout(this.tokenTimeout);
   };
 
   getAuthStatusListener = (): Observable<boolean> => {
