@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { URL_PREFIX } from '../utils';
 import { User } from './user.model';
@@ -14,7 +15,7 @@ export class AuthService {
   private userId: string;
   private authStatusListener = new Subject<boolean>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getToken = (): string => {
@@ -39,6 +40,7 @@ export class AuthService {
         if (this.token) {
           this.authStatusListener.next(true);
           this.isAuth = true;
+          this.router.navigate(['/']);
         }
       });
   };
@@ -48,6 +50,7 @@ export class AuthService {
     this.userId = null;
     this.authStatusListener.next(false);
     this.isAuth = false;
+    this.router.navigate(['/']);
   };
 
   getAuthStatusListener = (): Observable<boolean> => {
