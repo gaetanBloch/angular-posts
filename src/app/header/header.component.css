@@ -11,8 +11,13 @@ a {
   margin: 5px;
 }
 
+button {
+  margin: 5px;
+}
+
 a[mat-button].active,
-a[mat-button]:hover {
+a[mat-button]:hover,
+button:hover {
   background-color: rgba(0, 0, 0, 0.15);
 }
 

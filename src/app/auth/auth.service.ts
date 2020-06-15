@@ -43,6 +43,13 @@ export class AuthService {
       });
   };
 
+  logout = (): void => {
+    this.token = null;
+    this.userId = null;
+    this.authStatusListener.next(false);
+    this.isAuth = false;
+  };
+
   getAuthStatusListener = (): Observable<boolean> => {
     return this.authStatusListener.asObservable();
   };
