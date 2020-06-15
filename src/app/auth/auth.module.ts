@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
-import { AngularMaterialModule } from '../angular-material.module';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { AngularMaterialModule } from '../angular-material.module';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
-
-const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent }
-];
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   declarations: [
@@ -19,8 +15,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
-    AngularMaterialModule
+    AngularMaterialModule,
+    AuthRoutingModule
   ]
 })
 export class AuthModule {
