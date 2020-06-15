@@ -93,12 +93,14 @@ export class AuthService {
     this.userId = null;
     this.authStatusListener.next(false);
     this.isAuth = false;
-    this.router.navigate(['/']);
 
     // Clear Auth Data from localStorage
     this.clearAuthData();
 
+    // Clear logout timeout
     clearTimeout(this.tokenTimeout);
+
+    this.router.navigate(['/']);
   };
 
   getAuthStatusListener = (): Observable<boolean> => {
