@@ -37,8 +37,8 @@ export class AuthService {
   createUser = (email: string, name: string, password: string): void => {
     const user: User = { email, name, password };
     this.http.put(URL_PREFIX + 'auth/signup', user)
-      .subscribe(response => {
-        console.log(response);
+      .subscribe(() => {
+        this.router.navigate(['/login']);
       });
   };
 
@@ -63,7 +63,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresIn * 1000);
           this.saveAuthData(expirationDate);
 
-          this.router.navigate(['/']);
+          this.router.navigate(['']);
         }
       });
   };
@@ -100,7 +100,7 @@ export class AuthService {
     // Clear logout timeout
     clearTimeout(this.tokenTimeout);
 
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   };
 
   getAuthStatusListener = (): Observable<boolean> => {
