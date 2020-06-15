@@ -9,6 +9,7 @@ import { User } from './user.model';
   providedIn: 'root'
 })
 export class AuthService {
+  private isAuth = false;
   private token: string;
   private userId: string;
   private authStatusListener = new Subject<boolean>();
@@ -18,7 +19,7 @@ export class AuthService {
 
   getToken = (): string => {
     return this.token;
-  }
+  };
 
   createUser = (email: string, name: string, password: string): void => {
     const user: User = { email, name, password };
@@ -30,16 +31,23 @@ export class AuthService {
 
   login = (email: string, password: string): void => {
     const user: User = { email, password };
-    this.http.post<{token: string, userId: string}>
+    this.http.post<{ token: string, userId: string }>
     (URL_PREFIX + 'auth/login', user)
       .subscribe(response => {
         this.token = response.token;
         this.userId = response.userId;
-        this.authStatusListener.next(true);
+        if (this.token) {
+          this.authStatusListener.next(true);
+          this.isAuth = true;
+        }
       });
-  }
+  };
 
   getAuthStatusListener = (): Observable<boolean> => {
     return this.authStatusListener.asObservable();
-  }
+  };
+
+  isAuthenticated = (): boolean => {
+    return this.isAuth;
+  };
 }
