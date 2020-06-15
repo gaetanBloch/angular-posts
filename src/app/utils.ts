@@ -1,1 +1,3 @@
-export const URL_PREFIX = 'http://localhost:8080/';
+import { environment } from '../environments/environment';
+
+export const URL_PREFIX = environment.backendUrl;

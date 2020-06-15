@@ -5,8 +5,7 @@
 
     <mat-expansion-panel *ngFor="let post of posts">
       <mat-expansion-panel-header>
-        {{ post.title }} - created by
-        <strong>&ensp;{{ post.creator.name }}</strong>
+        {{ post.title }} - created by {{ post.creator.name }}
       </mat-expansion-panel-header>
       <p>{{ post.content }}</p>
       <div class="post-image">
