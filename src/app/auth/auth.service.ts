@@ -37,9 +37,12 @@ export class AuthService {
   createUser = (email: string, name: string, password: string): void => {
     const user: User = { email, name, password };
     this.http.put(URL_PREFIX + 'auth/signup', user)
-      .subscribe(() => {
-        this.router.navigate(['/login']);
-      });
+      .subscribe(
+        () => this.router.navigate(['/login']),
+        error => {
+          this.authStatusListener.next(false);
+        }
+      );
   };
 
   login = (email: string, password: string): void => {
