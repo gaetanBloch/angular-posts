@@ -63,18 +63,21 @@ export class AuthService {
 
   autoLogin = () => {
     const authData = this.getAuthData();
-    const now = new Date();
-    const expirationDate = new Date(authData.expiration);
-    const expiresIn = expirationDate.getTime() - now.getTime();
-    if (expiresIn > 0) {
-      // We can Login
-      this.token = authData.token;
-      this.userId = authData.userId;
-      this.authStatusListener.next(true);
-      this.isAuth = true;
 
-      // Auto Logout after timeout expires
-      this.setAuthTimeout(expiresIn / 1000);
+    if (authData) {
+      const now = new Date();
+      const expirationDate = new Date(authData.expiration);
+      const expiresIn = expirationDate.getTime() - now.getTime();
+      if (expiresIn > 0) {
+        // We can Login
+        this.token = authData.token;
+        this.userId = authData.userId;
+        this.authStatusListener.next(true);
+        this.isAuth = true;
+
+        // Auto Logout after timeout expires
+        this.setAuthTimeout(expiresIn / 1000);
+      }
     }
   };
 
