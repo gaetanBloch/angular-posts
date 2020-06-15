@@ -53,7 +53,7 @@ export class AuthService {
           this.authStatusListener.next(true);
           this.isAuth = true;
 
-          // Save Auth Data to local storage
+          // Save Auth Data to localStorage
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresIn * 1000);
           this.saveAuthData(expirationDate);
@@ -69,6 +69,10 @@ export class AuthService {
     this.authStatusListener.next(false);
     this.isAuth = false;
     this.router.navigate(['/']);
+
+    // Clear Auth Data from localStorage
+    this.clearAuthData();
+
     clearTimeout(this.tokenTimeout);
   };
 
@@ -87,4 +91,8 @@ export class AuthService {
       expiration: expirationDate.toISOString()
     }));
   };
+
+  private clearAuthData = () => {
+    localStorage.removeItem(USER);
+  }
 }
