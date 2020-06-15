@@ -50,25 +50,28 @@ export class AuthService {
     this.http.post<{ token: string, userId: string, expiresIn: number }>
     (URL_PREFIX + 'auth/login', user)
       .subscribe(response => {
-        this.token = response.token;
-        if (this.token) {
+          this.token = response.token;
+          if (this.token) {
 
-          // Auto Logout after timeout expires
-          const expiresIn = +response.expiresIn;
-          this.setAuthTimeout(expiresIn);
+            // Auto Logout after timeout expires
+            const expiresIn = +response.expiresIn;
+            this.setAuthTimeout(expiresIn);
 
-          this.userId = response.userId;
-          this.authStatusListener.next(true);
-          this.isAuth = true;
+            this.userId = response.userId;
+            this.authStatusListener.next(true);
+            this.isAuth = true;
 
-          // Save Auth Data to localStorage
-          const now = new Date();
-          const expirationDate = new Date(now.getTime() + expiresIn * 1000);
-          this.saveAuthData(expirationDate);
+            // Save Auth Data to localStorage
+            const now = new Date();
+            const expirationDate = new Date(now.getTime() + expiresIn * 1000);
+            this.saveAuthData(expirationDate);
 
-          this.router.navigate(['']);
-        }
-      });
+            this.router.navigate(['']);
+          }
+        },
+        error => {
+          this.authStatusListener.next(false);
+        });
   };
 
   autoLogin = () => {
@@ -115,7 +118,7 @@ export class AuthService {
     this.tokenTimeout = setTimeout(() => {
       this.logout();
     }, duration * 1000);
-  }
+  };
 
   private saveAuthData = (expirationDate: Date) => {
     localStorage.setItem(AUTH_DATA, JSON.stringify({
