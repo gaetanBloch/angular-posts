@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin = () => {
+    this.isLoading = true;
     this.authService.login(
       this.loginForm.value.email,
       this.loginForm.value.password
