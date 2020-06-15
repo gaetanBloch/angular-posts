@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 import { URL_PREFIX } from '../utils';
 import { User } from './user.model';
@@ -10,6 +11,7 @@ import { User } from './user.model';
 export class AuthService {
   private token: string;
   private userId: string;
+  private authStatusListener = new Subject<boolean>();
 
   constructor(private http: HttpClient) {
   }
@@ -33,6 +35,11 @@ export class AuthService {
       .subscribe(response => {
         this.token = response.token;
         this.userId = response.userId;
+        this.authStatusListener.next(true);
       });
+  }
+
+  getAuthStatusListener = (): Observable<boolean> => {
+    return this.authStatusListener.asObservable();
   }
 }
