@@ -6,10 +6,13 @@ import { Router } from '@angular/router';
 import { URL_PREFIX } from '../utils';
 import { User } from './user.model';
 
+const USER = 'posts-user';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private isAuth = false;
   private token: string;
   private userId: string;
@@ -49,6 +52,12 @@ export class AuthService {
           this.userId = response.userId;
           this.authStatusListener.next(true);
           this.isAuth = true;
+
+          // Save Auth Data to local storage
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + expiresIn * 1000);
+          this.saveAuthData(expirationDate);
+
           this.router.navigate(['/']);
         }
       });
@@ -69,5 +78,13 @@ export class AuthService {
 
   isAuthenticated = (): boolean => {
     return this.isAuth;
+  };
+
+  private saveAuthData = (expirationDate: Date) => {
+    localStorage.setItem(USER, JSON.stringify({
+      token: this.token,
+      userId: this.userId,
+      expiration: expirationDate.toISOString()
+    }));
   };
 }
