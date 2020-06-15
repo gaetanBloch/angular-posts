@@ -5,17 +5,17 @@
   <a routerLink="/" style="cursor: pointer">Posts</a>
   <span class="spacer"></span>
   <ul>
-    <li>
+    <li *ngIf="isAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="active">
         Create Post
       </a>
     </li>
-    <li>
+    <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="active">
         Login
       </a>
     </li>
-    <li>
+    <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/signup" routerLinkActive="active">
         Signup
       </a>
