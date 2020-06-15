@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 
 import { URL_PREFIX } from '../utils';
 import { User } from './user.model';
+import { AuthData } from './auth-data.model';
 
-const USER = 'posts-user';
+const AUTH_DATA = 'posts-auth-data';
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +45,7 @@ export class AuthService {
 
           // Auto Logout after timeout expires
           const expiresIn = +response.expiresIn;
-          console.log(`The token will expire in ${expiresIn} seconds`);
-          this.tokenTimeout = setTimeout(() => {
-            this.logout();
-          }, expiresIn * 1000);
+          this.setAuthTimeout(expiresIn);
 
           this.userId = response.userId;
           this.authStatusListener.next(true);
@@ -61,6 +59,23 @@ export class AuthService {
           this.router.navigate(['/']);
         }
       });
+  };
+
+  autoLogin = () => {
+    const authData = this.getAuthData();
+    const now = new Date();
+    const expirationDate = new Date(authData.expiration);
+    const expiresIn = expirationDate.getTime() - now.getTime();
+    if (expiresIn > 0) {
+      // We can Login
+      this.token = authData.token;
+      this.userId = authData.userId;
+      this.authStatusListener.next(true);
+      this.isAuth = true;
+
+      // Auto Logout after timeout expires
+      this.setAuthTimeout(expiresIn / 1000);
+    }
   };
 
   logout = (): void => {
@@ -84,8 +99,15 @@ export class AuthService {
     return this.isAuth;
   };
 
+  private setAuthTimeout = (duration: number) => {
+    console.log(`The token will expire in ${duration} seconds`);
+    this.tokenTimeout = setTimeout(() => {
+      this.logout();
+    }, duration * 1000);
+  }
+
   private saveAuthData = (expirationDate: Date) => {
-    localStorage.setItem(USER, JSON.stringify({
+    localStorage.setItem(AUTH_DATA, JSON.stringify({
       token: this.token,
       userId: this.userId,
       expiration: expirationDate.toISOString()
@@ -93,6 +115,15 @@ export class AuthService {
   };
 
   private clearAuthData = () => {
-    localStorage.removeItem(USER);
-  }
+    localStorage.removeItem(AUTH_DATA);
+  };
+
+  private getAuthData = (): AuthData => {
+    const authDataStored = localStorage.getItem(AUTH_DATA);
+    const authData: AuthData = JSON.parse(authDataStored);
+    if (authData.token) {
+      return authData;
+    }
+    return null;
+  };
 }
