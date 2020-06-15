@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { Post } from './post.model';
 import { URL_PREFIX } from '../utils';
+import { User } from '../auth/user.model';
 
 const URL_POSTS = URL_PREFIX + 'feed/posts';
 
@@ -13,10 +15,9 @@ const URL_POSTS = URL_PREFIX + 'feed/posts';
 })
 export class PostService {
   private posts: Post[] = [];
-  private postCount = 0;
   private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getPosts = (postsPerPage: number, currentPage: number): void => {
@@ -34,8 +35,10 @@ export class PostService {
         ))
       .subscribe(postsData => {
         this.posts = postsData.posts;
-        this.postCount = postsData.maxPosts;
-        this.notifyPostsUpdate();
+        this.postsUpdated.next({
+          posts: [...this.posts],
+          postCount: postsData.maxPosts
+        });
       });
   };
 
@@ -54,15 +57,9 @@ export class PostService {
 
   addPost = (title: string, content: string, image: File): void => {
     const postData = this.createFormData(title, content, image);
-    this.http.post<{ post: Post }>(URL_POSTS, postData)
-      .subscribe(response => {
-        console.log(response);
-        this.posts.push({
-          ...response.post,
-          imageUrl: URL_PREFIX + response.post.imageUrl
-        });
-        this.postCount++;
-        this.notifyPostsUpdate();
+    this.http.post<{ post: Post, creator: User }>(URL_POSTS, postData)
+      .subscribe(() => {
+        this.router.navigate(['']);
       });
   };
 
@@ -80,16 +77,8 @@ export class PostService {
     }
 
     this.http.put<{ post: Post }>(URL_POSTS + '/' + postId, postData)
-      .subscribe(response => {
-        console.log(response);
-        const updatedPosts = [...this.posts];
-        const updatedPostIndex = updatedPosts.findIndex(p => p._id === postId);
-        updatedPosts[updatedPostIndex] = {
-          ...response.post,
-          imageUrl: URL_PREFIX + response.post.imageUrl
-        };
-        this.posts = updatedPosts;
-        this.notifyPostsUpdate();
+      .subscribe(() => {
+        this.router.navigate(['']);
       });
   };
 
@@ -99,13 +88,6 @@ export class PostService {
 
   getPostUpdateListener = (): Observable<{ posts: Post[], postCount: number }> => {
     return this.postsUpdated.asObservable();
-  };
-
-  private notifyPostsUpdate = () => {
-    this.postsUpdated.next({
-      posts: [...this.posts],
-      postCount: this.postCount
-    });
   };
 
   private createFormData = (title, content, image, id = null): FormData => {

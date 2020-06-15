@@ -3,7 +3,7 @@
   <form *ngIf="!isLoading"
         (ngSubmit)="onSavePost()"
         [formGroup]="postForm">
-    <h1>{{ editMode ? 'Edit Post' : 'Save Post' }}</h1>
+    <h1>{{ editMode ? 'Edit Post' : 'Create Post' }}</h1>
 
     <mat-form-field hintLabel="Should be at least 5 characters">
       <mat-label>Title</mat-label>
@@ -39,7 +39,7 @@
               color="primary"
               type="submit"
               [disabled]="postForm.invalid">
-        {{ editMode ? 'Edit' : 'Save' }}
+        {{ editMode ? 'Edit' : 'Create' }}
       </button>
     </div>
 
