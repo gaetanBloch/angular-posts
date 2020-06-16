@@ -22,3 +22,21 @@ To see the back-end of this application implemented with Node.js, see [here](htt
 9. Navigate to http://localhost:4200/ with your favourite browser
 
 **Warning! You will get Errors if you are not running a back-end on http://localhost:8080 with the right REST API like [here](https://github.com/gaetanBloch/nodejs-posts).**
+
+## Application
+
+### Signup Page
+
+![Signup Page](https://i.imgur.com/qvtCCDW.png)
+
+### Login Page
+
+![Login Page](https://i.imgur.com/k9GHnSP.png)
+
+### Posts List
+
+![Posts List](https://i.imgur.com/uJAw7dd.png)
+
+### 404 NOT FOUND
+
+![404 Not Found](https://i.imgur.com/xzSJzzR.png)
