@@ -86,8 +86,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.postForm.value.image
       );
     }
-
-    this.router.navigate(['/']);
   };
 
   onImagePicked = (event: Event): void => {
