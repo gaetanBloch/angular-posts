@@ -37,6 +37,22 @@ To see the back-end of this application implemented with Node.js, see [here](htt
 
 ![Posts List](https://i.imgur.com/uJAw7dd.png)
 
+### Posts List With Details
+
+![Posts List details](https://i.imgur.com/VcdgiVA.png)
+
+### Posts List With Pagination
+
+![Posts List pagination](https://i.imgur.com/SEyIDAs.png)
+
+### Posts Create
+
+![Posts Create](https://i.imgur.com/GIXHJgO.png)
+
+### Posts Edit
+
+![Posts Edit](https://i.imgur.com/z3xYi8p.png)
+
 ### 404 NOT FOUND
 
-![404 Not Found](https://i.imgur.com/xzSJzzR.png)
+![404 Not Found](https://i.imgur.com/msVXab6.png)
