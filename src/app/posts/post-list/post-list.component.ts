@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
+import openSocket from 'socket.io-client';
 
 import { Post } from '../post.model';
 import { PostService } from '../post.service';
 import { AuthService } from '../../auth/auth.service';
+import { URL_PREFIX } from '../../utils';
 
 @Component({
   selector: 'app-post-list',
@@ -44,6 +46,10 @@ export class PostListComponent implements OnInit, OnDestroy {
       });
     this.isAuthenticated = this.authService.isAuthenticated();
     this.userId = this.authService.getUserId();
+
+    // Reload the posts on any socket action received
+    const socket = openSocket(URL_PREFIX);
+    socket.on('posts', () => this.getPosts());
   }
 
   onDelete = (postId): void => {
